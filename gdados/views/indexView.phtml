@@ -1,0 +1,15 @@
+<?php
+
+$this->Html->LoadJQuery();
+$this->Html->LoadExternCss(URL.'plugins/gerador/gdados/js/er');
+
+?>
+<script src="<?php echo URL; ?>/plugins/gerador/gdados/js/er.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        //$("#drawarea").erdraw({"cor":'punk'});
+        $("#drawarea").erdraw({"cor":'punk'});
+    });
+</script>
+<div id="drawmenu"></div>
+<div id="drawarea"></div>

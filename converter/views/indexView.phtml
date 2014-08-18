@@ -1,0 +1,10 @@
+<?php
+if(isset($parsed)) {
+    if(is_array($parsed)){
+        print_r($parsed);
+    }
+    else echo "$parsed";
+}
+    $this->LoadResource('formulario', 'form');
+    $this->form->NewForm($dados, $_POST, array(), false);
+?>

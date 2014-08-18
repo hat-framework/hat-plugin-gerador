@@ -1,0 +1,16 @@
+#esq, #dir{display: none;}
+#main-dir, #main{width: 99%; }
+
+#drawmenu{
+    height: 100px;
+    width: 20%;
+    float: left;
+    border: 1px solid gray;
+}
+
+#drawarea{
+    float: right;
+    border: 1px solid red;
+    height: 100px;
+    width: 79%;
+}
