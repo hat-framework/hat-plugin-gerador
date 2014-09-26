@@ -10,8 +10,9 @@ class %plugin_name%_%class_name%Model extends \classes\Model\Model{
 '
     ;
     public function getTemplate($plugin, $name, $tabela, $pkey, $dados, $extension = "\classes\Model\Model"){
-        if($name == "" || $tabela == "" || $pkey == "" || $dados == ""|| $extension == "" ) 
-            throw new modelException ("Erro ao gerar template do modelo: Atributos vazios");
+        if($name == "" || $tabela == "" || $pkey == "" || $dados == ""|| $extension == "" ) {
+            throw new \classes\Exceptions\modelException ("Erro ao gerar template do modelo: Atributos vazios ($name - $tabela - $pkey - $extension )");
+        }
         
         $pkey = (is_array($pkey))? $pkey = "array('".implode("','", $pkey)."')" : "'$pkey'";
         return str_replace(

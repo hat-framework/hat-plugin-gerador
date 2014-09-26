@@ -159,6 +159,7 @@ class gerador_converterModel extends \classes\Model\Model{
             if(!$this->inserirWidget($name)) return false;
             $out = array();
             foreach($rows['row'] as $row){
+                if(!is_array($row)){continue;}
                 $name2 = @$row['@attributes']['name'];
                 //echo $name2 . "<br/>";
                 $key = GetPlainName($name2);
@@ -180,7 +181,7 @@ class gerador_converterModel extends \classes\Model\Model{
                     }
                 }
                 $size = "FUNC_NULL";
-                $type = explode("(", $row['datatype']);
+                $type = explode("(", @$row['datatype']);
                 if(count($type) > 1) {
                     $size = end($type);
                     $size = str_replace(array("(", ")"), "", $size);
@@ -198,8 +199,8 @@ class gerador_converterModel extends \classes\Model\Model{
                     }
                 }
                 
-                $notnull = ($row['@attributes']['null'] == '1')? "n": 's';
-                $ai      = ($row['@attributes']['autoincrement'] == '1')? "s": 'n';
+                $notnull = (@$row['@attributes']['null'] == '1')         ? "n": 's';
+                $ai      = (@$row['@attributes']['autoincrement'] == '1')? "s": 'n';
                 //if($key == 'dstipomercado6'){
                 //    print_r($row);
                 //    die($notnull);
@@ -222,13 +223,13 @@ class gerador_converterModel extends \classes\Model\Model{
                     if($temp == "" || $temp == " ")unset($out[$key][$tname]);
                 }
                 
-                if(strtolower($out[$key]['type']) == "integer")
+                if(strtolower(@$out[$key]['type']) == "integer")
                     $out[$key]['type'] = 'int';
                 
-                if(strtolower($out[$key]['type']) == "text")
+                if(strtolower(@$out[$key]['type']) == "text")
                     unset($out[$key]['type']);
                 
-                if($out[$key]['auto_increment'] == "0")
+                if(@$out[$key]['auto_increment'] == "0")
                     unset($out[$key]['auto_increment']);
             }
             if(isset($rows['key'])){
@@ -265,7 +266,7 @@ class gerador_converterModel extends \classes\Model\Model{
             $name = GetPlainName($name);
             $debugar[$name] = $out;
             foreach($out as $tmname => $o){
-                if($o['type'] == 'text' || $o['type'] == 'blob'){
+                if(isset($o['type']) && ($o['type'] == 'text' || $o['type'] == 'blob')){
                     $o['grid']    = 'n';
                     $o['display'] = 'n';
                 }elseif(array_key_exists("primary", $o) && $o['primary'] == 's'){

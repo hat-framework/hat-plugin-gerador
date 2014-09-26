@@ -57,9 +57,11 @@ class %plugin%Actions extends Actions{
                 array('%name%', '%model%', '%plugin%'),  $arr, $this->template_action
         );
         
-        gerador_actiontemplateModel::$permission .= str_replace(
-                array('%name%', '%model%', '%plugin%'),  $arr, $this->permission_action
-        );
+        if(isset($this->permission_action)){
+            gerador_actiontemplateModel::$permission .= str_replace(
+                    array('%name%', '%model%', '%plugin%'),  $arr, $this->permission_action
+            );
+        }
     }
     
     private $template_action = "
@@ -97,5 +99,3 @@ class %plugin%Actions extends Actions{
     ";
     
 }
-
-?>
