@@ -263,7 +263,8 @@ class gerador_gdadosModel extends \classes\Model\Model{
     public function prepareModel($cod_widget, $modelnm){
         $add = $v = "";
         $this->modelnm = $modelnm;
-        $dados = $this->selecionar(array(), "cod_widget = '$cod_widget'", "", "", "cod_dados ASC");
+        $this->cod_widget = $cod_widget;
+        $dados = $this->selecionar(array(), "cod_widget = '$this->cod_widget'", "", "", "cod_dados ASC");
         //$dados = $this->selecionar(array(), "fkeymodel  = '$modelnm' AND cod_widget != '$cod_widget'", "", "", "cod_dados ASC");
         //echo $this->db->getSentenca();
         //debugarray($dados);
@@ -304,11 +305,12 @@ class gerador_gdadosModel extends \classes\Model\Model{
         $temp = explode("_", $label);
         $label = ucfirst(end($temp));
         if($fkeymodel != ""){
-            array_shift($temp);
+            if(count($temp) > 1){array_shift($temp);}
             $label = array_shift($temp);
             $label = ucfirst($label);
         }
         if($label == "Cod") $label = "Código";
+        if(trim($label) === ""){die("$fkeymodel!");}
         return "$this->j'name'     => '$label',";
     }
     
@@ -375,12 +377,14 @@ class gerador_gdadosModel extends \classes\Model\Model{
     
     private function genFkey($model, $column, $fkeyshowcolumn, $card){
         if($model == "" || $column == "" || $fkeyshowcolumn == "" || $card == "") return;
+
+        $this->findShowColumn($fkeyshowcolumn, $model);
         $t = "$this->j    ";
         $add = "";
-        if($card == "1n" && $model != "usuario/login") {
-            $add  = "$this->j'especial' => 'session',";
-            $add .= "$this->j'session'  => '$model',";
-        }
+        //if($card == "1n" && $model != "usuario/login") {
+        //    $add  = "$this->j'especial' => 'session',";
+        //    $add .= "$this->j'session'  => '$model',";
+        //}
         $add .= "$this->j'fkey' => array(";
         $add .= "$t'model' => '$model',";
         $add .= "$t'cardinalidade' => '$card',";
@@ -389,10 +393,17 @@ class gerador_gdadosModel extends \classes\Model\Model{
         return $add;
     }
     
+            private function findShowColumn(&$fkeyshowcolumn, $model){
+                $table = str_replace("/", '_', $model);
+                $this->join('gerador/widget', array('cod_widget'), array('cod_widget'));
+                $dados = $this->selecionar(array('dnome','`unique`'), "tabela='$table' AND type='varchar'", 1,'', 'cod_dados ASC, `unique` ASC');
+                if(empty($dados)){return;}
+                $fkeyshowcolumn = $dados[0]['dnome'];
+            }
+    
     public function getPks(){
         $temp = (count($this->pks) > 1)? $this->pks: $this->pks[0];
         $this->pks = array();
         return $temp;
     }
 }
-?>
