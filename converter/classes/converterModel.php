@@ -226,8 +226,8 @@ class gerador_converterModel extends \classes\Model\Model{
                 if(strtolower(@$out[$key]['type']) == "integer")
                     $out[$key]['type'] = 'int';
                 
-                if(strtolower(@$out[$key]['type']) == "text")
-                    unset($out[$key]['type']);
+//                if(strtolower(@$out[$key]['type']) == "text")
+//                    unset($out[$key]['type']);
                 
                 if(@$out[$key]['auto_increment'] == "0")
                     unset($out[$key]['auto_increment']);
@@ -308,5 +308,3 @@ class gerador_converterModel extends \classes\Model\Model{
     }
     
 }
-
-?>
