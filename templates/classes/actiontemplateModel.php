@@ -7,14 +7,14 @@ class gerador_actiontemplateModel extends \classes\Model\Model{
 use classes\Classes\Actions;   
 class %plugin%Actions extends Actions{
     protected $permissions = array(
-        "%plugin%/public" => array(
-            "nome"      => "%plugin%/public",
+        "%plugin%_public" => array(
+            "nome"      => "%plugin%_public",
             "label"     => "Acesso ao %plugin%",
             "descricao" => "Acesso público ao plugin %plugin%",
             "default"   => "s",
         ),
-         "%plugin%/admin" => array(
-            "nome"      => "%plugin%/admin",
+         "%plugin%_admin" => array(
+            "nome"      => "%plugin%_admin",
             "label"     => "Administrar %plugin%",
             "descricao" => "Permite gerenciar (adicionar, visualizar, editar e apagar) os dados do plugin %plugin%",
             "default"   => "n",
@@ -25,9 +25,9 @@ class %plugin%Actions extends Actions{
     protected $actions = array( 
         "%plugin%/index/index" => array(
             "label" => "%plugin%", "publico" => "n", "default_yes" => "s","default_no" => "n",
-            "permission" => "%plugin%/admin",
+            "permission" => "%plugin%_admin",
             "menu" => array(%acoes%),
-            "breadscrumb" => array("%plugin%/index/index", )
+            "breadscrumb" => array("%plugin%/index/index")
         ),
         %conteudo%
     );
@@ -68,31 +68,36 @@ class %plugin%Actions extends Actions{
         
         '%model%/index' => array(
             'label' => '%name%', 'publico' => 'n', 'default_yes' => 's','default_no' => 'n',
-            'permission' => '%plugin%/admin',
-            'menu' => array('Página Principal' => '%plugin%/index/index', '%model%/formulario')
+            'permission' => '%plugin%_admin',
+            'breadscrumb' => array('%plugin%/index/index', '%model%/index'),
+            'menu' => array('%model%/formulario')
         ),
         
         '%model%/formulario' => array(
             'label' => 'Criar %name%', 'publico' => 'n', 'default_yes' => 's','default_no' => 'n',
-            'permission' => '%plugin%/admin',
-            'menu' => array('Voltar' => '%model%/index')
+            'permission' => '%plugin%_admin',
+            'breadscrumb' => array('%plugin%/index/index', '%model%/index','%model%/formulario'),
+            'menu' => array()
         ),
         
         '%model%/show' => array(
             'label' => 'Visualizar %name%', 'publico' => 'n', 'default_yes' => 's','default_no' => 'n',
-            'permission' => '%plugin%/admin', 'needcod' => true,
-            'menu' => array('%model%/index', 'Ações' => array('Editar' => '%model%/edit', 'Excluir' => '%model%/apagar'))
+            'permission' => '%plugin%_admin', 'needcod' => true,
+            'breadscrumb' => array('%plugin%/index/index', '%model%/index','%model%/show'),
+            'menu' => array('Ações' => array('Editar' => '%model%/edit', 'Excluir' => '%model%/apagar'))
         ),
         
         '%model%/edit' => array(
             'label' => 'Editar %name%', 'publico' => 'n', 'default_no' => 's','default_no' => 'n', 
-            'permission' => '%plugin%/admin', 'needcod' => true,
-            'menu' => array('%model%/index', 'Voltar para %name%' => '%model%/show')
+            'permission' => '%plugin%_admin', 'needcod' => true,
+            'breadscrumb' => array('%plugin%/index/index', '%model%/index','%model%/show','%model%/edit'),
+            'menu' => array()
         ),
 
         '%model%/apagar' => array(
             'label' => 'Excluir %name%', 'publico' => 'n', 'default_no' => 's','default_no' => 'n',
-            'permission' => '%plugin%/admin', 'needcod' => true,
+            'permission' => '%plugin%_admin', 'needcod' => true,
+            'breadscrumb' => array('%plugin%/index/index', '%model%/index','%model%/show','%model%/apagar'),
             'menu' => array()
         ),
 
